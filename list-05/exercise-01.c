@@ -81,28 +81,44 @@ block *add(block *address)
     block *new = (block *)malloc(sizeof(block));
     block *aux;
 
-    printf("\nName: ");
+    printf("\nNome do item: ");
     scanf("%s", new->name);
 
-    printf("Id: ");
+    printf("Id do item: ");
     scanf("%s", new->id);
 
     for (aux = address; aux != NULL; aux = aux->next)
     {
         while (strcmp(aux->id, new->id) == 0)
         {
-            printf("\n\tInvalid\n");
+            printf("\n\tInvalid\n\n");
 
-            printf("Id: ");
+            printf("Id do item: ");
             scanf("%s", new->id);
         }
     }
 
-    printf("Amount: ");
-    scanf("%d", &new->amount);
+    do
+    {
+        printf("Quantidade de itens: ");
+        scanf("%d", &new->amount);
 
-    printf("Price: ");
-    scanf("%f", &new->price);
+        if (new->amount < 0)
+        {
+            printf("\n\tInvalid\n\n");
+        }
+    } while (new->amount < 0);
+
+    do
+    {
+        printf("Preco do item: ");
+        scanf("%f", &new->price);
+
+        if (new->price < 0)
+        {
+            printf("\n\tInvalid\n\n");
+        }
+    } while (new->price < 0);
 
     new->next = address;
 
@@ -113,12 +129,19 @@ void show(block *address)
 {
     block *aux;
 
-    for (aux = address; aux != NULL; aux = aux->next)
+    if (address == NULL)
     {
-        printf("\n\tName: %s\n", aux->name);
-        printf("\tId: %s\n", aux->id);
-        printf("\tAmount: %d\n", aux->amount);
-        printf("\tPrice: %f\n", aux->price);
+        printf("\n\tNot found\n");
+    }
+    else
+    {
+        for (aux = address; aux != NULL; aux = aux->next)
+        {
+            printf("\n\tNome: %s\n", aux->name);
+            printf("\tId: %s\n", aux->id);
+            printf("\tQuantidade: %d\n", aux->amount);
+            printf("\tPreco: %f\n", aux->price);
+        }
     }
 };
 
@@ -135,10 +158,10 @@ void search(block *address)
     {
         if (strcmp(aux->id, id) == 0)
         {
-            printf("\n\tName: %s\n", aux->name);
+            printf("\n\tNome: %s\n", aux->name);
             printf("\tId: %s\n", aux->id);
-            printf("\tAmount: %d\n", aux->amount);
-            printf("\tPrice: %f\n", aux->price);
+            printf("\tQuantidade: %d\n", aux->amount);
+            printf("\tPreco: %f\n", aux->price);
 
             counter++;
         }
@@ -146,7 +169,7 @@ void search(block *address)
 
     if (counter == 0)
     {
-        printf("\n\tInvalid\n");
+        printf("\n\tNot found\n");
     }
 };
 
@@ -167,7 +190,7 @@ block *delete(block *address)
 
     if (aux == NULL)
     {
-        printf("\n\tInvalid\n");
+        printf("\n\t Not found\n");
         return address;
     }
 
